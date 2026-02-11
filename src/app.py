@@ -21,6 +21,42 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
 
 # In-memory activity database
 activities = {
+    "Soccer Team": {
+        "description": "Team practices and competitive matches in soccer",
+        "schedule": "Tuesdays, 4:00 PM - 5:30 PM",
+        "max_participants": 22,
+        "participants": []
+    },
+    "Basketball Club": {
+        "description": "Skill drills and scrimmages for basketball enthusiasts",
+        "schedule": "Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 18,
+        "participants": []
+    },
+    "Drama Club": {
+        "description": "Acting workshops and school theater productions",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 16,
+        "participants": []
+    },
+    "Art Studio": {
+        "description": "Explore painting, drawing, and mixed media projects",
+        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+        "max_participants": 14,
+        "participants": []
+    },
+    "Math Olympiad": {
+        "description": "Problem-solving practice for math competitions",
+        "schedule": "Fridays, 3:30 PM - 4:30 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Science Club": {
+        "description": "Hands-on experiments and STEM project building",
+        "schedule": "Tuesdays, 3:30 PM - 4:30 PM",
+        "max_participants": 18,
+        "participants": []
+    }
     "Chess Club": {
         "description": "Learn strategies and compete in chess tournaments",
         "schedule": "Fridays, 3:30 PM - 5:00 PM",
@@ -61,7 +97,9 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
-
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
